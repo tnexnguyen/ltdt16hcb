@@ -16,6 +16,7 @@
     <style>
         body {
             padding-top: 50px;
+            margin: 15px;
         }
 
         .starter-template {
@@ -31,13 +32,6 @@
         }
 
         /* Optional: Makes the sample page fill the window. */
-
-        html,
-        body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
 
         #description {
             font-family: Roboto;
@@ -130,15 +124,14 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <li class="active"><a href="{{url('')}}">Maps</a></li>
+                <li><a href="{{url('table')}}">Manager location</a></li>
             </ul>
         </div><!--/.nav-collapse -->
     </div>
 </nav>
 
-<div class="row" style="margin-top: 70px">
+<div class="row">
     <div class="col-md-10" style="height: 800px">
         <div class="pac-card" id="pac-card">
             <div>
@@ -175,15 +168,25 @@
         </div>
     </div>
     <div class="col-md-2">
-        <div class="form-group">
-            <label for="">Lat</label>
-            <input type="text" placeholder="lat" id="mylat" class="form-control">
-        </div>
-        <div class="form-group">
-            <label for="">Long</label>
-            <input type="text" placeholder="long" id="mylong" class="form-control">
-        </div>
-        <button class="btn btn-success">Save</button>
+        <form action="" method="post">
+            <div class="form-group">
+                <label for="">Lat</label>
+                <input name="lat" type="text" placeholder="lat" id="mylat" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="">Long</label>
+                <input name="long" type="text" placeholder="long" id="mylong" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="">label</label>
+                <input name="label" type="text" placeholder="label" id="" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="">note</label>
+                <input name="note" type="text" placeholder="note" id="" class="form-control">
+            </div>
+            <button class="btn btn-success">Save</button>
+        </form>
     </div>
 </div>
 
@@ -275,7 +278,30 @@
 //                strokeWeight: 2,
 //                map: map
 //            });
+            console.log(json);
             marker.setMap(null);
+            // add poly
+            _.map(json, function (vertexes) {
+                _.map(vertexes.vetexes, function (aVer) {
+                    var disCoordinates = [
+                        new google.maps.LatLng(vertexes.lat, vertexes.long),
+                        new google.maps.LatLng(aVer.lat, aVer.long)
+                    ];
+                    var flightPath = new google.maps.Polyline({
+                        path: disCoordinates,
+//                        editable: true,
+                        strokeColor: '#673AB7',
+                        strokeOpacity: 1.0,
+                        strokeWeight: 3,
+                        icons: [{
+                            icon: {path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW},
+                            offset: '100%'
+                        }],
+                        map: map
+                    });
+                })
+            })
+            // show marker
             _.map(json, function (value) {
                 addMarker({lat: value.lat, lng: value.long}, value);
             })
@@ -298,7 +324,7 @@
             $('#mylong').val(lng);
             marker.addListener('dragend', dragMarker);
             var infowindow = new google.maps.InfoWindow({
-                content: option.note
+                content: option.label + '<br/>' +  option.note
             });
             marker.addListener('click', function () {
                 infowindow.open(map, marker);
@@ -309,7 +335,7 @@
         autocomplete.addListener('place_changed', function () {
             marker.setVisible(false);
 
-            var place = autocomplete.getPlace();
+            var place = autocomplete.getPlace()
 
             if (!place.geometry) {
                 // User entered the name of a Place that was not suggested and
