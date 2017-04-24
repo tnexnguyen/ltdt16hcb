@@ -124,7 +124,8 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="{{url('')}}">Maps</a></li>
+                <li class=""><a href="{{url('')}}">FLOYD</a></li>
+                <li class="active"><a href="{{url('show')}}">Maps</a></li>
                 <li><a href="{{url('table')}}">Manager location</a></li>
             </ul>
         </div><!--/.nav-collapse -->

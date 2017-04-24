@@ -15,16 +15,22 @@ $app->get('/', function () use ($app) {
     return $app->version();
 });
 
-$app->get('/', 'LocationController@shows');
-$app->post('/', 'LocationController@shows');
-$app->get('/table', 'LocationController@tableLocation');
-
-$app->get('/createdis/{id}', 'LocationController@createDistances');
-$app->post('/createdis/{id}', 'LocationController@createDistances');
-
-
-$app->get('/del/{id}', 'LocationController@delLocation');
-$app->get('/deldistance/{id}', 'LocationController@delDistance');
 
 //Ployd
-$app->get('floyd', 'FloydController@index');
+$app->get('/', 'FloydController@index');
+$app->get('login', 'LocationController@login');
+$app->post('login', 'LocationController@login');
+
+$app->group(['middleware' => 'authen'], function () use ($app) {
+    $app->get('/show', 'LocationController@shows');
+    $app->post('/show', 'LocationController@shows');
+    $app->get('/table', 'LocationController@tableLocation');
+
+    $app->get('/createdis/{id}', 'LocationController@createDistances');
+    $app->post('/createdis/{id}', 'LocationController@createDistances');
+
+
+    $app->get('/del/{id}', 'LocationController@delLocation');
+    $app->get('/deldistance/{id}', 'LocationController@delDistance');
+
+});

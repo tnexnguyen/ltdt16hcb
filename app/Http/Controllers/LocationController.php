@@ -22,6 +22,18 @@ class LocationController extends Controller
         //
     }
 
+    public function login(Request $request)
+    {
+        if ($request->isMethod('post')) {
+            if ($request->get('username') == '16hcb' && $request->get('password') == '16hcb') {
+                session_start();
+                $_SESSION['authen'] = md5($request->get('username'));
+                return redirect('/');
+            }
+        }
+        return view('login');
+    }
+
     public function createDistances($id, Request $request)
     {
         if ($request->isMethod('post')) {

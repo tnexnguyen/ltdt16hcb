@@ -112,7 +112,8 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="{{url('')}}">Maps</a></li>
+                <li class=""><a href="{{url('')}}">FLOYD</a></li>
+                <li class="active"><a href="{{url('show')}}">Maps</a></li>
                 <li><a href="{{url('table')}}">Manager location</a></li>
             </ul>
         </div><!--/.nav-collapse -->
@@ -160,7 +161,7 @@
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="{{url('/assets/jquery.min.js')}}"></script>
 <script src="{{url('/assets/bootstrap/js/bootstrap.min.js')}}"></script>
 <script src="{{url('/assets/lodash.js')}}"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAT45o6yraEoNjpCpcA8IpEcp3G7eLtsYQ&libraries=places&callback=initMap"
