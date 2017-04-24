@@ -24,25 +24,28 @@ class FloydController extends Controller
 
     public function index()
     {
-
-        $vertexs = Location::with('vetexes')->whereIn('id', [17, 21, 12, 22, 13, 15])->get()->sortBy('id');
+//17, 21, 12, 22, 13,14, 15,16,72,74
+        $vertexs = Location::with('vetexes')->get()->sortBy('id');
+//        $vertexs = Location::with('vetexes')->get()->sortBy('id');
         $matrix = collect($vertexs)->map(function ($val, $key) use ($vertexs) {
             $init = array_fill(0, $vertexs->count(), 0);
+
             foreach ($val->vetexes as $item) {
-                $index = $vertexs->search(function ($v, $k) use ($item) {
-                    return $item->id == $v->id;
-                });
-                if ($index) {
-                    $init[$index] = $item->pivot->distances;
+                foreach ($vertexs as $k => $v){
+                    if($item->id == $v->id){
+                        $init[$k] = $item->pivot->distances;
+                        break;
+                    }
                 }
 
             }
             return $init;
 
         });
+
         $data['matrix'] = collect($matrix)->toJson();
         $data['vertexs'] = collect($vertexs)->map(function ($val, $key) {
-            return collect($val)->only(['id', 'lat', 'long', 'label', 'note']);
+            return $val;
         });
         return view('floyd', $data);
     }
