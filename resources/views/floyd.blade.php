@@ -401,7 +401,12 @@
             console.log("Shortest path's length:", 0);
             console.log("Shortest path's:", start);
         } else if (start == pre[start][end]) {
-            return [];
+            if(grarp[start][end] == 0) {
+                return [];
+            } else {
+                return _.reverse(shortestPath);
+            }
+
         } else {
             console.log("Shortest path's length:", shortestLength[start][end]);
             console.log("Shortest path's:", shortestPath);
